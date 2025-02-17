@@ -1,0 +1,33 @@
+{% extends 'main/layout.html' %}
+
+{% block title %}{{ article.title }}{% endblock %}
+
+{% block content %}
+    <h1>{{ article.title }}</h1>
+    <p>{{ article.full_text }}</p>
+    <p><em>{{ article.date }}</em></p>
+
+    <h2>Комментарии</h2>
+<div>
+    {% for comment in comments %}
+        <div>
+            <strong>{{ comment.name }}</strong> <em>{{ comment.created_at|date:"d M Y H:i" }}</em>
+            <p>{{ comment.content }}</p>
+            {% if comment.email %}
+                <p>Email: {{ comment.email }}</p>
+            {% endif %}
+        </div>
+    {% empty %}
+        <p>Комментариев пока нет.</p>
+    {% endfor %}
+</div>
+
+<h3>Оставить комментарий</h3>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    
+    <button type="submit">Добавить комментарий</button>
+</form>
+
+{% endblock %}
